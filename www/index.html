@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRCode Generator</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.container {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #eee;
+  outline: none;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #667eea;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+canvas {
+  margin-top: 20px;
+  max-width: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>QRCode Generator</h2>
+  <input type="text" id="text" placeholder="Masukkan teks atau link...">
+  <button onclick="generateQR()">Generate QR</button>
+  <canvas id="qrcode"></canvas>
+  <button id="downloadBtn" onclick="downloadQR()" disabled>Download QR</button>
+</div>
+
+<script>
+function generateQR() {
+  const text = document.getElementById("text").value;
+  const canvas = document.getElementById("qrcode");
+  const downloadBtn = document.getElementById("downloadBtn");
+
+  if(text.trim() === "") {
+    alert("Isi dulu bego");
+    return;
+  }
+
+  QRCode.toCanvas(canvas, text, {
+    width: 250,
+    margin: 2
+  }, function (error) {
+    if (!error) {
+      downloadBtn.disabled = false;
+    }
+  });
+}
+
+function downloadQR() {
+  const canvas = document.getElementById("qrcode");
+  const link = document.createElement("a");
+  link.download = "Zeed-QR.png";
+  link.href = canvas.toDataURL();
+  link.click();
+}
+</script>
+
+</body>
+</html>
